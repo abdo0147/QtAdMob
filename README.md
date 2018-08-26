@@ -118,7 +118,12 @@ android:
 
 - In AndroidManifest.xml make changes like in picture below:
 ![](https://github.com/yevgeniy-logachev/QtAdMob/blob/master/AndroidManifest.png)
-
+## EU Consent ##
+- Replace publisherId with your's
+- Replace privacy policy url with your's
+![](https://github.com/abdo0147/QtAdMob/blob/master/screen2.png)
+- You will find your publisher id here
+![](https://github.com/abdo0147/QtAdMob/blob/master/screen3.jpg)
 ## If you use Gradle automation build system ##
 - Make sure that you have installed Google Repository, Google Play services and Android Support Repository in android sdk
 
