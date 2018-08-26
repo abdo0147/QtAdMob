@@ -381,7 +381,7 @@ public class QtAdMobActivity extends QtActivity
 
 		URL privacyUrl = null;
 		try {
-			privacyUrl = new URL("https://sites.google.com/view/hexagone-privacy-policy-apps/home"); // <--- TODO: Replace with your app's privacy policy URL.
+			privacyUrl = new URL("https://your.app/privacy-policy/"); // <--- TODO: Replace with your app's privacy policy URL.
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			// Handle error.
