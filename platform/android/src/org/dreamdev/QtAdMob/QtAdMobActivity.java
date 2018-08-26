@@ -15,6 +15,9 @@ import org.qtproject.qt5.android.bindings.QtActivity;
 import org.qtproject.qt5.android.bindings.QtApplication;
 import java.util.ArrayList;
 import android.widget.FrameLayout;
+import com.google.ads.consent.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class QtAdMobActivity extends QtActivity
 {
@@ -29,6 +32,7 @@ public class QtAdMobActivity extends QtActivity
     private int m_AdBannerHeight = 0;
     private int m_StatusBarHeight = 0;
     private int m_ReadyToRequest = 0x00;
+    private ConsentForm form;
 
     private int GetStatusBarHeight()
     {
@@ -359,6 +363,68 @@ public class QtAdMobActivity extends QtActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+	ConsentInformation consentInformation = ConsentInformation.getInstance(this);
+
+		String[] publisherIds = {"pub-XXXXXXXXXXXXXXXX"};    // <--- TODO: Replace with your puplisher id
+		consentInformation.requestConsentInfoUpdate(publisherIds, new ConsentInfoUpdateListener() {
+			@Override
+			public void onConsentInfoUpdated(ConsentStatus consentStatus) {
+
+			}
+
+			@Override
+			public void onFailedToUpdateConsentInfo(String errorDescription) {
+
+			}
+		});
+
+
+		URL privacyUrl = null;
+		try {
+			privacyUrl = new URL("https://sites.google.com/view/hexagone-privacy-policy-apps/home"); // <--- TODO: Replace with your app's privacy policy URL.
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			// Handle error.
+		}
+		form = new ConsentForm.Builder(this, privacyUrl)
+				.withListener(new ConsentFormListener() {
+					@Override
+					public void onConsentFormLoaded() {
+						// Consent form loaded successfully.
+						//    Toast.makeText(getApplicationContext(), "FORM: LOADED",
+						//    Toast.LENGTH_LONG).show();
+						form.show();
+
+					}
+
+					@Override
+					public void onConsentFormOpened() {
+						// Consent form was displayed.
+						//     Toast.makeText(getApplicationContext(), "FORM: OPENED",
+						//    Toast.LENGTH_LONG).show();
+					}
+
+					@Override
+					public void onConsentFormClosed(
+							ConsentStatus consentStatus, Boolean userPrefersAdFree) {
+						// Consent form was closed.
+						//      Toast.makeText(getApplicationContext(), "FORM: CLOSED",
+						//        Toast.LENGTH_LONG).show();
+					}
+
+					@Override
+					public void onConsentFormError(String errorDescription) {
+						// Consent form error.
+						//    Toast.makeText(getApplicationContext(), "FORM: ERROR"+errorDescription,
+						//         Toast.LENGTH_LONG).show();
+					}
+				})
+				.withPersonalizedAdsOption()
+				.withNonPersonalizedAdsOption()
+				//     .withAdFreeOption()
+				.build();
+
+		form.load();
     }
 
     @Override
